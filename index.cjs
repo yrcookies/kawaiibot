@@ -1,4 +1,5 @@
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
+require('dotenv').config(); // Add this line to load environment variables
 
 // Define your user IDs and mapping
 const NOTIFY_USER_IDS = [
@@ -21,10 +22,10 @@ const USERNAME_MAPPING = {
     '2489912359': 'X_rlxs'
 };
 
-// Replace these with your actual values
-const DISCORD_CHANNEL_ID = '1154788253556289616'; // Replace with your channel ID
-const DISCORD_USER_ID = '1259957971828605032'; // Replace with your user ID
-const BOT_TOKEN = 'MTI3ODQxNjQ2MTc3NzQ2OTQ4MQ.GASss8.inaOt-RmD20zVdr_7qYfitiGFJaM7ZwBvobtew'; // Replace with your bot token
+// Replace these with your actual values from environment variables
+const DISCORD_CHANNEL_ID = process.env.DISCORD_CHANNEL_ID;
+const DISCORD_USER_ID = process.env.DISCORD_USER_ID;
+const BOT_TOKEN = process.env.BOT_TOKEN;
 
 const client = new Client({ intents: [
     GatewayIntentBits.Guilds,

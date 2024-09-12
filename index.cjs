@@ -43,6 +43,9 @@ client.once('ready', () => {
 async function notifyOnlineUsers() {
     console.log('Checking for online users...');
 
+    // Dynamically import fetch
+    const { default: fetch } = await import('node-fetch');
+
     const url = 'https://kawaiibot.onrender.com/proxy/roblox';
     const body = JSON.stringify({ userIds: NOTIFY_USER_IDS });
 

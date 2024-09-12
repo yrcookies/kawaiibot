@@ -1,31 +1,36 @@
 const express = require('express');
-const fetch = require('node-fetch'); // Use require() for CommonJS
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+(async () => {
+    // Dynamically import fetch
+    const { default: fetch } = await import('node-fetch');
 
-app.use(express.json());
+    const app = express();
+    const PORT = process.env.PORT || 3000;
 
-app.post('/proxy/roblox', async (req, res) => {
-    const { userIds } = req.body;
+    app.use(express.json());
 
-    try {
-        const response = await fetch('https://presence.roblox.com/v1/presence/users', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userIds })
-        });
-        const data = await response.json();
-        res.json(data);
-    } catch (error) {
-        res.status(500).send('Error fetching data');
-    }
-});
+    app.post('/proxy/roblox', async (req, res) => {
+        const { userIds } = req.body;
 
-app.listen(PORT, () => {
-    console.log(`Proxy server running on port ${PORT}`);
-});
+        try {
+            const response = await fetch('https://presence.roblox.com/v1/presence/users', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userIds })
+            });
+            const data = await response.json();
+            res.json(data);
+        } catch (error) {
+            res.status(500).send('Error fetching data');
+        }
+    });
 
-app.get('/', (req, res) => {
-    res.send('Server is running');
-});
+    app.listen(PORT, () => {
+        console.log(`Proxy server running on port ${PORT}`);
+    });
+
+    app.get('/', (req, res) => {
+        res.send('Server is running');
+    });
+
+})();

@@ -1,5 +1,6 @@
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
-require('dotenv').config(); // Add this line to load environment variables
+require('dotenv').config(); // Load environment variables
+const fetch = require('node-fetch'); // Static import
 
 // Define your user IDs and mapping
 const NOTIFY_USER_IDS = [
@@ -43,9 +44,6 @@ client.once('ready', () => {
 async function notifyOnlineUsers() {
     console.log('Checking for online users...');
 
-    // Dynamically import fetch
-    const { default: fetch } = await import('node-fetch');
-
     const url = 'https://kawaiibot.onrender.com/proxy/roblox';
     const body = JSON.stringify({ userIds: NOTIFY_USER_IDS });
 
@@ -57,6 +55,11 @@ async function notifyOnlineUsers() {
         });
         const data = await response.json();
         console.log('Fetched presence data:', data);
+
+        if (!data.userPresences) {
+            console.log('No user presences data available.');
+            return;
+        }
 
         for (const presence of data.userPresences) {
             const userId = presence.userId;
@@ -86,7 +89,6 @@ async function notifyOnlineUsers() {
                     console.error('Channel not found.');
                 }
             } else {
-                // Handle cases where user is not in a game or gameId is null
                 if (presence.userPresenceType === 2) {
                     console.log(`Game ID is null for ${username} but user is in-game.`);
                 } else {

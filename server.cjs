@@ -1,10 +1,8 @@
 const express = require('express');
+const fetch = require('node-fetch'); // Use require() for CommonJS
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-// Import fetch dynamically
-const fetch = (await import('node-fetch')).default;
 
 app.use(express.json());
 
@@ -24,10 +22,10 @@ app.post('/proxy/roblox', async (req, res) => {
     }
 });
 
-app.get('/', (req, res) => {
-    res.send('Server is running');
-});
-
 app.listen(PORT, () => {
     console.log(`Proxy server running on port ${PORT}`);
+});
+
+app.get('/', (req, res) => {
+    res.send('Server is running');
 });
